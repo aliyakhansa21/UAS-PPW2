@@ -8,6 +8,7 @@ use App\Models\Application;
 use App\Exports\ApplicationsExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 use App\Mail\JobAppliedMail;
 use App\Notifications\NewApplicationNotification;
 use App\Models\User;
@@ -37,13 +38,13 @@ class ApplicationController extends Controller
     public function store(Request $request, $jobId)
     {
         $request->validate([
-            'cv' => 'required',
+            'cv' => 'required|mimes:pdf|max:2048',
         ]);
 
         $cvPath = $request->file('cv')->store('cvs', 'public');
 
-        $application = JobVacancy::create([
-            'user_id' => auth()->id(),
+        $application = Application::create([
+            'user_id' => Auth::id(),
             'job_id' => $jobId,
             'cv' => $cvPath,
         ]);

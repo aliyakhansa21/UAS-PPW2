@@ -14,5 +14,12 @@ class JobVacancy extends Model
     /**
      * Mass assignable columns for job vacancies.
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'title',
+        'description',
+        'location',
+        'company',
+        'logo',
+        'salary',
+    ];
 }

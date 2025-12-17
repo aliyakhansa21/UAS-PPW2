@@ -12,9 +12,14 @@ class JobController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        if ($search) {
+            $query = Job::where('title', 'like', "%{$search}%")
+                        ->orWhere('company', 'like', "%{$search}%");
+        } else {
+            $query = Job::query();
+        }
 
-        $jobs = Job::paginate();
-
+        $jobs = $query->paginate(10);
         return view('jobs.index', compact('jobs', 'search'));
     }
 
